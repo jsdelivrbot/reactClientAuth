@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import SigninForm from './signin_form'
-import * as actions from '../../actions'
 import { connect } from 'react-redux'
+import SignupForm from './signup_form'
+import * as actions from '../../actions'
 import { Redirect } from 'react-router-dom'
 
-class Signin extends Component {
+class Signup extends Component {
 
   componentWillUnmount() {
     if (this.props.errorMessage) {
@@ -12,19 +12,14 @@ class Signin extends Component {
     }
   }
 
-  displayRedirectMessages() {
-    const location = this.props.location
-    return location.state && <div className="alert alert-danger">{location.state.message}</div>
-  }
-
-  handleSubmit({email, password}) {
-    this.props.signinUser({email, password})
+  handleSubmit({email, password, passwordConfirmation}) {
+    this.props.signupUser({email, password, passwordConfirmation})
   }
 
   getRedirectPath() {
     const locationState = this.props.location.state
     if (locationState && locationState.from.pathname) {
-      return locationState.from.pathname // redirects to referring url
+      return locationState.from.pathname
     } else {
       return '/'
     }
@@ -39,8 +34,7 @@ class Signin extends Component {
       }}/>
       :
       <div>
-        {this.displayRedirectMessages()}
-        <SigninForm onSubmit={this.handleSubmit.bind(this)} errorMessage={this.props.errorMessage}/>
+        <SignupForm onSubmit={this.handleSubmit.bind(this)} errorMessage={this.props.errorMessage}/>
       </div>
   }
 }
@@ -52,4 +46,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, actions)(Signin)
+export default connect(mapStateToProps, actions)(Signup)
